@@ -60,10 +60,16 @@ public class Main{
 					flag = true;
 		}while(flag);			
 		System.out.println("" + kCenters[i].getRed() + " " + kCenters[i].getGreen() + " " + kCenters[i].getBlue());
-	}
-	
+	}		
     }
 
+    public double diff(Color pixel1, Color pixel2){
+	double diffR = Math.abs(pixel1.getRed() - pixel2.getRed());
+	double diffG = Math.abs(pixel1.getGreen() - pixel2.getGreen());
+	double diffB = Math.abs(pixel1.getBlue() - pixel2.getBlue());
+	double diff = diffR + diffG + diffB;
+	return diff;		
+    }
     public void readImageIn(){
         try{
             image = ImageIO.read(new File(fileName));
