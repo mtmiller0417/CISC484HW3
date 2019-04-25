@@ -46,12 +46,19 @@ public class Main{
 	//printRGB();
 
 	//picks k random centers from the image
-	//need to check they aren't all the same 
 	for(int i = 0; i < k; i++){
-		Random r =  new Random();
-		int row = r.nextInt(imageHeight);
-		int col = r.nextInt(imageWidth);
-		kCenters[i] = pixels[row][col];
+		boolean flag;
+		do{
+			flag = false;
+			Random r =  new Random();
+			int row = r.nextInt(imageHeight);
+			int col = r.nextInt(imageWidth);
+			kCenters[i] = pixels[row][col];
+
+			for(int j = 0; j < i; j++)
+				if ((kCenters[i].getRed() == kCenters[j].getRed()) && (kCenters[i].getGreen() == kCenters[j].getGreen()) && (kCenters[i].getBlue() == kCenters[j].getBlue()))
+					flag = true;
+		}while(flag);			
 		System.out.println("" + kCenters[i].getRed() + " " + kCenters[i].getGreen() + " " + kCenters[i].getBlue());
 	}
 	
