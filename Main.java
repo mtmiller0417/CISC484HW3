@@ -8,6 +8,7 @@ public class Main{
     int k;
     String fileName;
     BufferedImage image;
+    BufferedImage newImage;
     Color[] kCenters;
     Color[][] pixels;
     int[][] assignedCluster;
@@ -28,15 +29,22 @@ public class Main{
             k = 2;
             fileName = args[0];
         }
-        else if(args.length == 2){
+        if(args.length == 2){
             k = Integer.parseInt(args[1]);
         }
+
+        System.out.println("K = " + k);
 
         // Read in image file
         readImageIn();
         // Find the images width and height(in pixels)
 	    imageWidth = image.getWidth();
         imageHeight = image.getHeight();
+
+        System.out.println("ImageWidth: " + imageWidth);
+        System.out.println("ImageHeight: " + imageHeight);
+
+        //System.exit(1);
 
 	    kCenters = new Color[k];
         pixels = new Color[imageHeight][imageWidth];
@@ -70,6 +78,13 @@ public class Main{
         System.out.println("Choosing initial random centers done!");		
 
         assignPixelsToClusters();
+
+        System.out.println("Finding new centers...");
+
+        findNewCenters();
+
+        createNewImageFile();
+
     }
 
     public double diff(Color pixel1, Color pixel2){
@@ -100,7 +115,7 @@ public class Main{
     // There are k clusters, ranging from 0 - (k-1)
     public void assignPixelsToClusters(){
 
-        for(int i = 0; i < imageHeight; i++)
+        for(int i = 0; i < imageHeight; i++){
             for(int j = 0; j < imageWidth; j++){
                 //System.out.println("pixel[" + i + "][" + j + "]"); // Used for some debugging
 
@@ -121,5 +136,66 @@ public class Main{
                 }
                 assignedCluster[i][j] = closestCluster;
             }
-    }   
+        }
+    }
+
+    public void findNewCenters(){
+        for(int i = 0; i < kCenters.length; i++){
+            kCenters[i] = findClusterAvgColor(i);
+            System.out.println("" + kCenters[i].getRed() + " " + kCenters[i].getGreen() + " " + kCenters[i].getBlue());
+        }
+    }
+
+    public Color findClusterAvgColor(int cluster){
+        // Check if the input is valid, cluster numbers range from 0 - (k-1)
+        if(cluster >= k){
+            System.out.println("ERROR, no such cluster exists!");
+            System.exit(-1);
+        }
+
+        int rSum = 0;
+        int gSum = 0;
+        int bSum = 0;
+        int numPixels = 0;
+
+        //Sum up all the values of each pixels R, G and B in the cluster
+        for(int i = 0; i < imageHeight; i++){
+            for(int j = 0; j < imageWidth; j++){
+                if(assignedCluster[i][j] == cluster){
+                    rSum += pixels[i][j].getRed();
+                    gSum += pixels[i][j].getGreen();
+                    bSum += pixels[i][j].getBlue();
+                    numPixels++;
+                }
+            }
+        } // All pixels have been summed at this point
+
+        return new Color(rSum/numPixels, gSum/numPixels, bSum/numPixels);
+    }
+
+    public void createNewImageFile(){
+        //Create the new bufferedImage and fill the image with the appropriate pixels
+        fillNewImage();
+
+        try {
+            ImageIO.write(newImage, "png", new File(k + "_Colored_Image.png"));
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+        
+    }
+    
+    public void fillNewImage(){
+        // Create a new BufferedImage, to be set with the pixels
+        newImage = new BufferedImage(imageWidth, imageHeight, BufferedImage.TYPE_INT_RGB);
+
+        // Fill the new image with the pixels
+        for(int i = 0; i < imageHeight; i++)
+            for(int j = 0; j < imageWidth; j++){
+                //System.out.println("pixel[" + i + "][" + j + "]");
+                newImage.setRGB(j, i, kCenters[assignedCluster[i][j]].getRGB());
+                //newImage.setRGB(j, i, kCenters[0].getRGB());
+            }
+        
+    }
 }
