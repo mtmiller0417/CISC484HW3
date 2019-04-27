@@ -59,6 +59,8 @@ public class Main{
         pixels = new Color[imageHeight][imageWidth];
         assignedCluster = new int[imageHeight][imageWidth];
 
+        System.out.println("Filling pixels array...\n");
+
         // Fill the pixel array with each pixel(as a color)
 	    for(int i = 0; i < imageHeight; i++)
 		    for (int j = 0; j <imageWidth; j++){
@@ -66,7 +68,10 @@ public class Main{
             }
 	    //printRGB();
 
-	    //picks k random centers from the image
+        //picks k random centers from the image
+        
+        System.out.println("Picking k random centers...\n");
+
 	    for(int i = 0; i < k; i++){
 		    boolean flag;
 		    do{
@@ -81,19 +86,22 @@ public class Main{
 				    if ((kCenters[i].getRed() == kCenters[j].getRed()) && (kCenters[i].getGreen() == kCenters[j].getGreen()) && (kCenters[i].getBlue() == kCenters[j].getBlue()))
 					    flag = true;
 		    }while(flag);			
-		    System.out.println("" + kCenters[i].getRed() + " " + kCenters[i].getGreen() + " " + kCenters[i].getBlue());
+		    // System.out.println("    " + kCenters[i].getRed() + " " + kCenters[i].getGreen() + " " + kCenters[i].getBlue()); // Keep this in or out?
         }
 
-        System.out.println("Choosing initial random centers done!");		
+        System.out.println("Choosing initial random centers done!\n");		
 
         assignPixelsToClusters();
 
-        System.out.println("Finding new centers...");
+        System.out.println("Finding new centers...\n");
 
         findNewCenters();
 
+        System.out.println("Creating new Image...\n");
+
         createNewImageFile();
 
+        System.out.println("New " + k + " colored image has been created!");
     }
 
     public double diff(Color pixel1, Color pixel2){
@@ -117,7 +125,7 @@ public class Main{
 	    for(int i = 0; i < image.getHeight(); i++)
 		    for(int j = 0; j < image.getWidth(); j++)
 			    //if (pixels[i][j].getGreen() != 255) //(to print pixels from the circle)
-				    System.out.println("" + i + " " + j + " " + pixels[i][j].getRed() + " " + pixels[i][j].getGreen() + " " + pixels[i][j].getBlue());
+				    System.out.println("    " + i + " " + j + " " + pixels[i][j].getRed() + " " + pixels[i][j].getGreen() + " " + pixels[i][j].getBlue());
     }
 
     // This method will assign all pixels to their nearest cluster
@@ -151,7 +159,7 @@ public class Main{
     public void findNewCenters(){
         for(int i = 0; i < kCenters.length; i++){
             kCenters[i] = findClusterAvgColor(i);
-            System.out.println("" + kCenters[i].getRed() + " " + kCenters[i].getGreen() + " " + kCenters[i].getBlue());
+            //System.out.println("    " + kCenters[i].getRed() + " " + kCenters[i].getGreen() + " " + kCenters[i].getBlue());// Keep this in or out
         }
     }
 
