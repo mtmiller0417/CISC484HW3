@@ -7,6 +7,7 @@ import java.awt.image.BufferedImage;
 public class Main{
     int k;
     String fileName;
+    String imageFileType;
     BufferedImage image;
     BufferedImage newImage;
     Color[] kCenters;
@@ -41,8 +42,16 @@ public class Main{
 	    imageWidth = image.getWidth();
         imageHeight = image.getHeight();
 
+        imageFileType = getImgFileType(fileName);
+        // Confirm that the fileType is not null
+        if(imageFileType == null){
+            System.out.println("ERROR getting the image file type");
+            System.exit(-1);
+        }
+
         System.out.println("ImageWidth: " + imageWidth);
         System.out.println("ImageHeight: " + imageHeight);
+        System.out.println("Image file type: " + getImgFileType(fileName));
 
         //System.exit(1);
 
@@ -178,7 +187,7 @@ public class Main{
         fillNewImage();
 
         try {
-            ImageIO.write(newImage, "png", new File(k + "_Colored_Image.png"));
+            ImageIO.write(newImage, imageFileType, new File(k + "_Colored_Image." + imageFileType));
         } catch (IOException e){
             e.printStackTrace();
         }
@@ -196,6 +205,13 @@ public class Main{
                 newImage.setRGB(j, i, kCenters[assignedCluster[i][j]].getRGB());
                 //newImage.setRGB(j, i, kCenters[0].getRGB());
             }
-        
+    }
+
+    public String getImgFileType(String fileName){
+        if(fileName.length() > 4){
+            return fileName.substring(fileName.length() - 3);
+        }
+        else    
+            return null;
     }
 }
