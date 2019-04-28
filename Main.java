@@ -13,6 +13,7 @@ public class Main{
     Color[] kCenters;
     Color[][] pixels;
     int[][] assignedCluster;
+    int[][] newCluster;
     int imageHeight, imageWidth;
 
     //Pass in as command line argument the file being processed
@@ -58,6 +59,7 @@ public class Main{
 	    kCenters = new Color[k];
         pixels = new Color[imageHeight][imageWidth];
         assignedCluster = new int[imageHeight][imageWidth];
+	newCluster = new int[imageHeight][imageWidth];
 
         System.out.println("Filling pixels array...\n");
 
@@ -90,12 +92,14 @@ public class Main{
         }
 
         System.out.println("Choosing initial random centers done!\n");		
-
-        assignPixelsToClusters();
-
-        System.out.println("Finding new centers...\n");
-
-        findNewCenters();
+	boolean converge;
+	do{
+		assignPixelsToClusters(assignedCluster);
+        	System.out.println("Finding new centers...\n");
+        	findNewCenters();
+		assignPixelsToClusters(newCluster);
+		converge = compareAssignNew(assignedCluster, newCluster);
+	}while(!converge);
 
         System.out.println("Creating new Image...\n");
 
@@ -111,6 +115,15 @@ public class Main{
 	    double diff = diffR + diffG + diffB;
 	    return diff;		
     }
+
+    public boolean compareAssignNew(int[][] a, int[][] b){
+	boolean flag = true;
+	for(int i = 0; i < image.getHeight(); i++)
+		for (int j = 0; j < image.getWidth(); j++)
+			if (a[i][j] != b[i][j])
+				flag = false;
+	return flag;	
+    } 
 
     public void readImageIn(){
         try{
@@ -130,7 +143,7 @@ public class Main{
 
     // This method will assign all pixels to their nearest cluster
     // There are k clusters, ranging from 0 - (k-1)
-    public void assignPixelsToClusters(){
+    public void assignPixelsToClusters(int[][] assigned){
 
         for(int i = 0; i < imageHeight; i++){
             for(int j = 0; j < imageWidth; j++){
@@ -151,7 +164,7 @@ public class Main{
                     System.out.println("Error, no closest cluster found");
                     System.exit(-1);
                 }
-                assignedCluster[i][j] = closestCluster;
+                assigned[i][j] = closestCluster;
             }
         }
     }
