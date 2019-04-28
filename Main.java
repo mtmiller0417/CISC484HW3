@@ -208,7 +208,7 @@ public class Main{
         fillNewImage();
 
         try {
-            ImageIO.write(newImage, imageFileType, new File(k + "_Colored_Image." + imageFileType));
+            ImageIO.write(newImage, imageFileType, new File(k + "_Colored_" + fileName.substring(0,fileName.length() - 4) + "." + imageFileType));
         } catch (IOException e){
             e.printStackTrace();
         }
