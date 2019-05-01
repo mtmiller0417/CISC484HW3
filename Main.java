@@ -86,7 +86,7 @@ public class Main{
                 for(int j = 0; j < i; j++)
                     //Check if the newly chosen color matches any other newly chosen color
 				    if ((kCenters[i].getRed() == kCenters[j].getRed()) && (kCenters[i].getGreen() == kCenters[j].getGreen()) && (kCenters[i].getBlue() == kCenters[j].getBlue()))
-					    flag = true;
+                        flag = true;
 		    }while(flag);			
 		    // System.out.println("    " + kCenters[i].getRed() + " " + kCenters[i].getGreen() + " " + kCenters[i].getBlue()); // Keep this in or out?
         }
