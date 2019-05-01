@@ -1,0 +1,28 @@
+REPORT for CISC 484 HW3
+
+Concerning the realationship between k and the size of the new image:
+    Lower values of k are associated with smaller file sizes. As the k's 
+    increase, so does the file's size. This only holds up to a certain k.  
+    Eventually, around k = 5 for the 3 pictures, increasing k does not increase 
+    the file size, and so the file size remains approximately the same for larger 
+    k's.
+
+Best k for picture 1:
+    I think the best k for picture 1 is 20 because all k's less than this 
+    don't caputre enough complexity of the picture, and k = 20 is around the 
+    same size as k = 10 and k = 5.
+
+Best k for picture 2:
+    I think that k = 20 is the best k for picture 2 because it captures the 
+    most detail and has a very similar file size to k = 10 and k = 5 which
+    both provide less detail than k = 20.
+
+Best k for picture 3:
+    I think that the best k for picture 3 is 20 because it is very close to the
+    actual image and has a very similar file size to k = 5 and k = 10, which both
+    provide less detail than k = 20.
+
+Reflection on k choices for pictures:
+    I think that becasue the 3 pictures were of outside and captured a variety of 
+    things, higher values of k were required to make the picture clear and distinguish
+    details.
